@@ -7,23 +7,11 @@ const app = express();
 
 const port = process.env.PORT || 5000;
 
+const tokenApi = require("./routes/auth/auth")
+
 middlewares(app);
 
-
-const verifyCookie = (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return res.status(401).send({ message: "Unauthorized Access" });
-  }
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).send({ message: "Unauthorized Access" });
-    }
-    req.user = decoded;
-    next();
-  });
-};
-
+app.use(tokenApi)
 
 app.get("/health", (req, res) => {
   res.send("server is running data will be appear soon...");
