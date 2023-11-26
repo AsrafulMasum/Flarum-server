@@ -5,13 +5,15 @@ const connectDB = require("./db/connectDB");
 
 const app = express();
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 const tokenApi = require("./routes/auth/auth")
+const userApi = require("./routes/user/user")
 
 middlewares(app);
 
 app.use(tokenApi)
+app.use(userApi)
 
 app.get("/health", (req, res) => {
   res.send("server is running data will be appear soon...");
