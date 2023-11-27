@@ -1,5 +1,5 @@
 
-const { insertUser, findUser, updateUser } = require("../../lib/user/user");
+const { insertUser, findUser, updateUser, findSingleUser } = require("../../lib/user/user");
 const user = require("./../../models/users/user");
 
 const userInsertController = async (req, res) => {
@@ -18,6 +18,13 @@ const userFindController = async (req, res) => {
   res.send(result)
 }
 
+const singleUserFindController = async (req, res) => {
+  const userEmail = req.params.email
+  const query = {email: userEmail}
+  const result = await findSingleUser(query)
+  res.send(result)
+}
+
 const updateUserController = async (req, res) => {
   const userInfo = req.body
   const userEmail = req.params.email
@@ -26,4 +33,4 @@ const updateUserController = async (req, res) => {
   res.send(result)
 }
 
-module.exports = {userInsertController, userFindController, updateUserController};
+module.exports = {userInsertController, userFindController, updateUserController, singleUserFindController};

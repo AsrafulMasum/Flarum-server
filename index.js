@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 const tokenApi = require("./src/routes/auth/auth");
 const userApi = require("./src/routes/user/user");
 const tagsApi = require("./src/routes/tags/tags");
-const paymentApi = require("./src/routes/payment/payment")
+const paymentApi = require("./src/routes/payment/payment");
 
 middlewares(app);
 

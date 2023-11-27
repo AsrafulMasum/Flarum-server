@@ -21,6 +21,11 @@ const findUser = async () => {
   return result;
 };
 
+const findSingleUser = async (query) => {
+  const result = await user.findOne(query);
+  return result;
+};
+
 const updateUser = async (filter, userInfo) => {
   const options = { upsert: true };
   const updatedUser = {
@@ -33,4 +38,4 @@ const updateUser = async (filter, userInfo) => {
   return result;
 };
 
-module.exports = {insertUser, findUser, updateUser};
+module.exports = {insertUser, findUser, updateUser, findSingleUser};
