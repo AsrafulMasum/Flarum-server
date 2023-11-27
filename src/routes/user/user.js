@@ -10,10 +10,10 @@ const router = require("express").Router();
 
 router.put("/users", userInsertController);
 
-router.get("/users", userFindController);
+router.get("/users", verifyToken, userFindController);
 
 router.get("/users/:email", verifyToken, singleUserFindController);
 
-router.put("/users/:email", updateUserController);
+router.put("/users/:email", verifyToken, updateUserController);
 
 module.exports = router;

@@ -11,13 +11,15 @@ const tokenApi = require("./src/routes/auth/auth");
 const userApi = require("./src/routes/user/user");
 const tagsApi = require("./src/routes/tags/tags");
 const paymentApi = require("./src/routes/payment/payment");
+const postsApi = require("./src/routes/posts/posts");
 
 middlewares(app);
 
 app.use(tokenApi);
 app.use(userApi);
 app.use(tagsApi);
-app.use(paymentApi)
+app.use(paymentApi);
+app.use(postsApi);
 
 app.get("/health", (req, res) => {
   res.send("server is running data will be appear soon...");
