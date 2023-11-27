@@ -21,4 +21,16 @@ const findUser = async () => {
   return result;
 };
 
-module.exports = {insertUser, findUser};
+const updateUser = async (filter, userInfo) => {
+  const options = { upsert: true };
+  const updatedUser = {
+    $set: {
+      role: userInfo?.role,
+      badge: userInfo?.badge,
+    },
+  };
+  const result = await user.updateOne(filter, updatedUser, options);
+  return result;
+};
+
+module.exports = {insertUser, findUser, updateUser};

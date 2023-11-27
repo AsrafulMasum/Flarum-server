@@ -1,21 +1,23 @@
 require("dotenv").config();
 const express = require("express");
-const { middlewares } = require("./middlewares/defaultMiddlewares");
-const connectDB = require("./db/connectDB");
+const { middlewares } = require("./src/middlewares/defaultMiddlewares");
+const connectDB = require("./src/db/connectDB");
 
 const app = express();
 
 const port = process.env.PORT || 3000;
 
-const tokenApi = require("./routes/auth/auth");
-const userApi = require("./routes/user/user");
-const tagsApi = require("./routes/tags/tags");
+const tokenApi = require("./src/routes/auth/auth");
+const userApi = require("./src/routes/user/user");
+const tagsApi = require("./src/routes/tags/tags");
+const paymentApi = require("./src/routes/payment/payment")
 
 middlewares(app);
 
 app.use(tokenApi);
 app.use(userApi);
 app.use(tagsApi);
+app.use(paymentApi)
 
 app.get("/health", (req, res) => {
   res.send("server is running data will be appear soon...");

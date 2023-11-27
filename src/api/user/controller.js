@@ -1,5 +1,5 @@
 
-const { insertUser, findUser } = require("../../lib/user/user");
+const { insertUser, findUser, updateUser } = require("../../lib/user/user");
 const user = require("./../../models/users/user");
 
 const userInsertController = async (req, res) => {
@@ -18,4 +18,12 @@ const userFindController = async (req, res) => {
   res.send(result)
 }
 
-module.exports = {userInsertController, userFindController};
+const updateUserController = async (req, res) => {
+  const userInfo = req.body
+  const userEmail = req.params.email
+  const filter = {email: userEmail}
+  const result = await updateUser(filter,userInfo);
+  res.send(result)
+}
+
+module.exports = {userInsertController, userFindController, updateUserController};
