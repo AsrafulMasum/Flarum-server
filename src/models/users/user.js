@@ -1,7 +1,6 @@
 const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema({
-
   name: {
     type: String,
     required: true,
@@ -18,7 +17,10 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  
+  badge: {
+    type: String,
+    required: true,
+  },
 });
 
 const user = model("user", userSchema);

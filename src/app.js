@@ -7,13 +7,15 @@ const app = express();
 
 const port = process.env.PORT || 3000;
 
-const tokenApi = require("./routes/auth/auth")
-const userApi = require("./routes/user/user")
+const tokenApi = require("./routes/auth/auth");
+const userApi = require("./routes/user/user");
+const tagsApi = require("./routes/tags/tags");
 
 middlewares(app);
 
-app.use(tokenApi)
-app.use(userApi)
+app.use(tokenApi);
+app.use(userApi);
+app.use(tagsApi);
 
 app.get("/health", (req, res) => {
   res.send("server is running data will be appear soon...");
