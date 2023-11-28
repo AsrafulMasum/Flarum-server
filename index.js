@@ -12,6 +12,7 @@ const userApi = require("./src/routes/user/user");
 const tagsApi = require("./src/routes/tags/tags");
 const paymentApi = require("./src/routes/payment/payment");
 const postsApi = require("./src/routes/posts/posts");
+const announcementApi = require("./src/routes/announcements/announcements")
 
 middlewares(app);
 
@@ -20,6 +21,7 @@ app.use(userApi);
 app.use(tagsApi);
 app.use(paymentApi);
 app.use(postsApi);
+app.use(announcementApi)
 
 app.get("/health", (req, res) => {
   res.send("server is running data will be appear soon...");

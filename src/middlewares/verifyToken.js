@@ -10,7 +10,7 @@ const verifyToken = (req, res, next) => {
     if (err) {
       return res.status(401).send({ message: "Unauthorized Access" });
     }
-    req.user = decoded;
+    req.decoded = decoded;
     next();
   });
 };

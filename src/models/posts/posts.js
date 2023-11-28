@@ -33,6 +33,10 @@ const postsSchema = new Schema({
     type: Number,
     required: true,
   },
+  commentsCount: {
+    type: Number,
+    required: true,
+  },
   date: {
     type: String,
     required: true,
