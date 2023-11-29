@@ -11,8 +11,9 @@ const postsInsertController = async (req, res) => {
       tags: req.body.tags,
       upVote: req.body.upVote,
       downVote: req.body.downVote,
-      commentsCount: req.body.commentsCount,
+      comments: req.body.comments,
       date: req.body.date,
+      millisecond: req.body.millisecond,
     });
     await postInfo.save();
     res.send({ success: true });
@@ -23,14 +24,24 @@ const postsInsertController = async (req, res) => {
 };
 
 const findPostsController = async (req, res) => {
-  const result = await posts.find();
+  const result = await posts.find().sort({ millisecond: -1 });
   res.send(result);
 };
 
 const findSinglePostsControllerById = async (req, res) => {
   const id = req.params.id;
-  const result = await posts.findById(id).select("upVote downVote -_id");
+  const result = await posts.findById(id);
   res.send(result);
+};
+
+const searchPostsByTags = async (req, res) => {
+  try {
+    const tag = req.query.tags;
+    const result = await posts.find({ tags: { $regex: new RegExp(tag, "i") } });
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const findSinglePostsController = async (req, res) => {
@@ -48,9 +59,24 @@ const findSinglePostsController = async (req, res) => {
 
 const updateSinglePostsController = async (req, res) => {
   const id = req.params.id;
+  const updatedInfo = req.body;
   try {
-    await posts.findByIdAndUpdate(id, req.body, { new: true });
-    res.send({ success: true });
+    if (updatedInfo?.upVote) {
+      await posts.findByIdAndUpdate(id, {
+        $push: { upVote: updatedInfo.upVote },
+      });
+      res.send({ success: true });
+    } else if (updatedInfo?.downVote) {
+      await posts.findByIdAndUpdate(id, {
+        $push: { downVote: updatedInfo.downVote },
+      });
+      res.send({ success: true });
+    } else if (updatedInfo?.comments) {
+      await posts.findByIdAndUpdate(id, {
+        $push: { comments: updatedInfo.comments },
+      });
+      res.send({ success: true });
+    }
   } catch (error) {
     console.log(error);
     res.send({ message: "Failed to update posts" });
@@ -72,6 +98,7 @@ module.exports = {
   findPostsController,
   findSinglePostsController,
   findSinglePostsControllerById,
+  searchPostsByTags,
   updateSinglePostsController,
   deletePost,
 };

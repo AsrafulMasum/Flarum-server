@@ -26,19 +26,23 @@ const postsSchema = new Schema({
     required: true,
   },
   upVote: {
-    type: Number,
+    type: Array,
     required: true,
   },
   downVote: {
-    type: Number,
+    type: Array,
     required: true,
   },
-  commentsCount: {
-    type: Number,
+  millisecond: {
+    type: String,
     required: true,
   },
   date: {
     type: String,
+    required: true,
+  },
+  comments: {
+    type: Array,
     required: true,
   },
 });
