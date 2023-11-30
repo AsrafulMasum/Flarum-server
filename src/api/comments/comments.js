@@ -57,9 +57,20 @@ const updateCommentsController = async (req, res) => {
     });
 };
 
+const deleteCommentsController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await comments.findByIdAndDelete({ _id: id });
+    res.send({ success: true });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 module.exports = {
   postCommentsController,
   findCommentsByPostId,
   updateCommentsController,
   findCommentsContainFeedback,
+  deleteCommentsController
 };

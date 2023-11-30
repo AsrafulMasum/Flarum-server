@@ -23,10 +23,29 @@ const postsInsertController = async (req, res) => {
   }
 };
 
+// app.get("/assignments", async (req, res) => {
+//   const page = parseInt(req.query.page);
+//   const size = parseInt(req.query.size);
+//   const filter = req.query.filter;
+
+//   let query = {};
+//   if (filter && filter !== "All") {
+//     query = { difficulty: filter };
+//   }
+//   const result = await assignmentsCollections
+//     .find(query)
+//     .skip(page * size)
+//     .limit(size)
+//     .toArray();
+//   res.send(result);
+// });
+
 const findPostsController = async (req, res) => {
   const sort = req.query.sort;
+  const page = parseInt(req.query.page);
+  const size = parseInt(req.query.size);
   if (sort) {
-    posts
+    const sortedResult = await posts
       .aggregate([
         {
           $addFields: {
@@ -42,15 +61,18 @@ const findPostsController = async (req, res) => {
         {
           $sort: { voteDifference: -1 },
         },
+        {
+          $skip: page * size,
+        },
+        {
+          $limit: size,
+        },
       ])
-      .then((result) => {
-        res.send(result);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+      .exec();
+
+    res.send(sortedResult);
   } else {
-    const result = await posts.find().sort({ millisecond: -1 });
+    const result = await posts.find().sort({ millisecond: -1 }).skip(page * size).limit(size);
     res.send(result);
   }
 };
