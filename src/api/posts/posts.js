@@ -24,8 +24,35 @@ const postsInsertController = async (req, res) => {
 };
 
 const findPostsController = async (req, res) => {
-  const result = await posts.find().sort({ millisecond: -1 });
-  res.send(result);
+  const sort = req.query.sort;
+  if (sort) {
+    posts
+      .aggregate([
+        {
+          $addFields: {
+            upVoteTotal: { $size: "$upVote" },
+            downVoteTotal: { $size: "$downVote" },
+          },
+        },
+        {
+          $addFields: {
+            voteDifference: { $subtract: ["$upVoteTotal", "$downVoteTotal"] },
+          },
+        },
+        {
+          $sort: { voteDifference: -1 },
+        },
+      ])
+      .then((result) => {
+        res.send(result);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  } else {
+    const result = await posts.find().sort({ millisecond: -1 });
+    res.send(result);
+  }
 };
 
 const findSinglePostsControllerById = async (req, res) => {
@@ -50,7 +77,7 @@ const findSinglePostsController = async (req, res) => {
     const query = {
       email: userEmail,
     };
-    const result = await posts.find(query);
+    const result = await posts.find(query).sort({ millisecond: -1 });
     res.send(result);
   } catch (error) {
     console.log(error);
@@ -69,11 +96,6 @@ const updateSinglePostsController = async (req, res) => {
     } else if (updatedInfo?.downVote) {
       await posts.findByIdAndUpdate(id, {
         $push: { downVote: updatedInfo.downVote },
-      });
-      res.send({ success: true });
-    } else if (updatedInfo?.comments) {
-      await posts.findByIdAndUpdate(id, {
-        $push: { comments: updatedInfo.comments },
       });
       res.send({ success: true });
     }

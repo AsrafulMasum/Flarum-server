@@ -41,10 +41,6 @@ const postsSchema = new Schema({
     type: String,
     required: true,
   },
-  comments: {
-    type: Array,
-    required: true,
-  },
 });
 
 const posts = model("posts", postsSchema);
